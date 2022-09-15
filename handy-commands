@@ -1,0 +1,11 @@
+# Get Chocolatey
+Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString(‘https://chocolatey.org/install.ps1’))
+
+# Copy Kubeconfig
+Start-BitsTransfer https://raw.githubusercontent.com/swapnil-nirmata/git-app/main/kubeconfig
+
+# Copy the script 
+Start-BitsTransfer https://raw.githubusercontent.com/swapnil-nirmata/windows-nodes/main/Windows-setup.ps1
+
+# run the script
+.\PrepareNode.ps1 -KubernetesVersion v1.23.3 -ContainerRuntime containerD
