@@ -743,31 +743,31 @@ function GetKubeletArguments()
 
     $kubeletArgs = @(
         $((get-command kubelet.exe -ErrorAction Stop).Source),
-        "--node-labels=node-role.kubernetes.io/agent=,kubernetes.io/role=agent",
+        # "--node-labels=node-role.kubernetes.io/agent=,kubernetes.io/role=agent",
         "--hostname-override=$(hostname)",
         '--v=6',
         '--pod-infra-container-image=kubeletwin/pause',
-        '--resolv-conf=""',
+        # '--resolv-conf=""',
         # '--allow-privileged=true',
-        '--enable-debugging-handlers', # Comment for Config
+        # '--enable-debugging-handlers', # Comment for Config
         "--cluster-dns=$KubeDnsServiceIp", # Comment for Config
-        '--cluster-domain=cluster.local', # Comment for Config
+        # '--cluster-domain=cluster.local', # Comment for Config
         "--kubeconfig=$KubeConfig",
-        '--hairpin-mode=promiscuous-bridge', # Comment for Config
+        # '--hairpin-mode=promiscuous-bridge', # Comment for Config
         '--image-pull-progress-deadline=20m',
-        '--cgroups-per-qos=false',
-        "--log-dir=$LogDir",
+        # '--cgroups-per-qos=false',
+        # "--log-dir=$LogDir",
         '--logtostderr=false',
-        '--enforce-node-allocatable=""',
+        # '--enforce-node-allocatable=""',
         '--network-plugin=cni',
         "--cni-bin-dir=$CniDir",
         "--cni-conf-dir=$CniConf",
         "--node-ip=$NodeIp"
-    )
+     )
 
     if ($KubeletFeatureGates -ne "")
     {
-        $kubeletArgs += "--feature-gates=$KubeletFeatureGates"
+        $kubeletArgs += ""
     }
 
     $KubeletConfiguration = @{
