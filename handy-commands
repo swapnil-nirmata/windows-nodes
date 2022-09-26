@@ -9,3 +9,26 @@ Start-BitsTransfer https://raw.githubusercontent.com/swapnil-nirmata/windows-nod
 
 # run the script
 .\PrepareNode.ps1 -KubernetesVersion v1.23.3 -ContainerRuntime containerD
+
+# Commands 
+
+powershell
+Install-Module DockerMsftProvider -Force
+Install-Package Docker -ProviderName DockerMsftProvider -Force
+(Install-WindowsFeature Containers).RestartNeeded
+Restart-Computer
+
+This only installs the server, we also need docker client,
+Start-BitsTransfer https://raw.githubusercontent.com/swapnil-nirmata/windows-nodes/main/handy-commands
+choco install docker
+docker version
+
+Create directory 
+mkdir c:\k
+
+Copy Kubeconfig file to this folder
+Start-BitsTransfer https://raw.githubusercontent.com/swapnil-nirmata/windows-nodes/main/kubeconfig
+
+Copy Script for Worker node addition
+Start-BitsTransfer https://raw.githubusercontent.com/swapnil-nirmata/windows-nodes/main/Windows-setup.ps1
+
