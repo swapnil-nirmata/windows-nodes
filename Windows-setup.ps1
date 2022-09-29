@@ -4,7 +4,7 @@ Param(
     [parameter(Mandatory = $false)] $ClusterCIDR="10.244.0.0/16",
     [parameter(Mandatory = $false)] $ServiceCIDR="10.96.0.0/12",
     [parameter(Mandatory = $false)] $InterfaceName="Ethernet0",
-    [parameter(Mandatory = $false)] $Release = "1.23.1",
+    [parameter(Mandatory = $false)] $Release = "1.21.1",
     [parameter(Mandatory = $false)] $NanosServerImageTag = "10.0.17763.802",
     [parameter(Mandatory = $false)] $ServerCoreImageTag = "ltsc2019",
 
@@ -28,7 +28,7 @@ $Global:CniPath=$Global:BaseDir
 # $Global:ManagementIp="10.10.1.161"
 $Global:InterfaceName=$InterfaceName
 $Global:ClusterCidr=$ClusterCIDR
-$Global:KubeletFeatureGates="RotateKubeletClientCertificate=true"
+#$Global:KubeletFeatureGates="RotateKubeletClientCertificate=true"
 $Global:KubeproxyFeatureGates="WinOverlay=true"
 # Docker is installed ?
 function IsDockerInstalledAndRunning() 
@@ -755,20 +755,15 @@ function GetKubeletArguments()
         "--kubeconfig=$KubeConfig",
         # '--hairpin-mode=promiscuous-bridge', # Comment for Config
         '--image-pull-progress-deadline=20m',
-        # '--cgroups-per-qos=false',
+        '--cgroups-per-qos=false',
         # "--log-dir=$LogDir",
         '--logtostderr=false',
-        # '--enforce-node-allocatable=""',
+        '--enforce-node-allocatable=""',
         '--network-plugin=cni',
         "--cni-bin-dir=$CniDir",
         "--cni-conf-dir=$CniConf",
         "--node-ip=$NodeIp"
      )
-
-    if ($KubeletFeatureGates -ne "")
-    {
-        $kubeletArgs += ""
-    }
 
     $KubeletConfiguration = @{
         Kind = "KubeletConfiguration";
