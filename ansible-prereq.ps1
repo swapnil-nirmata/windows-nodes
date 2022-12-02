@@ -35,13 +35,11 @@ function InstallOPENSSH()
     }
 
 }
-
-VerifyPowerShell (){
+function VerifyPowerShell(){
     Get-Host | Select-Object Version
     Get-ChildItem 'HKLM:\SOFTWARE\Microsoft\NET Framework Setup\NDP' -Recurse | Get-ItemProperty -Name version -EA 0 | Where { $_.PSChildName -Match '^(?!S)\p{L}'} | Select PSChildName, version
 }
-
-InstallWINRM (){
+function InstallWINRM (){
     [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
     $url = "https://raw.githubusercontent.com/ansible/ansible/devel/examples/scripts/ConfigureRemotingForAnsible.ps1"
     $file = "$env:temp\ConfigureRemotingForAnsible.ps1" (New-Object -TypeName System.Net.WebClient).DownloadFile($url, $file)
