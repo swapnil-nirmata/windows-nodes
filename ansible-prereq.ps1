@@ -1,5 +1,9 @@
-#SCRIPT PREREQ :
+Param(
 
+    [parameter(Mandatory = $false)] $InterfaceName="Ethernet0"
+)
+
+$Global:InterfaceName=$InterfaceName
 function SetGlobals()
 {
     if ((Get-NetAdapter -InterfaceAlias "vEthernet ($Global:InterfaceName)" -ErrorAction SilentlyContinue))
@@ -42,12 +46,13 @@ function VerifyPowerShell(){
 function InstallWINRM (){
     [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
     $url = "https://raw.githubusercontent.com/ansible/ansible/devel/examples/scripts/ConfigureRemotingForAnsible.ps1"
-    $file = "$env:temp\ConfigureRemotingForAnsible.ps1" (New-Object -TypeName System.Net.WebClient).DownloadFile($url, $file)
+    $file = "$env:temp\ConfigureRemotingForAnsible.ps1" 
+    (New-Object -TypeName System.Net.WebClient).DownloadFile($url, $file)
     powershell.exe -ExecutionPolicy ByPass -File $file
     winrm get winrm/config/Service
 
-    winrm set winrm/config/service/auth @{Basic="true"}
-    winrm set winrm/config/service @{AllowUnencrypted="true"}
+    cmd /c "winrm set winrm/config/service/auth @{Basic='true'}"
+    cmd /c "winrm set winrm/config/service @{AllowUnencrypted='true'}"
 
     netsh advfirewall firewall add rule name="ICMP Allow incoming V6 echo request" protocol="icmpv6:8,any" dir=in action=allow
     netsh advfirewall firewall add rule name="ICMP Allow incoming V4 echo request" protocol="icmpv4:8,any" dir=in action=allow
