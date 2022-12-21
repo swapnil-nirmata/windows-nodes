@@ -1,34 +1,31 @@
-# Get Chocolatey
-Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString(‘https://chocolatey.org/install.ps1’))
+# Setup SSHD
+Get-WindowsCapability -Online | Where-Object Name -like 'OpenSSH*'
+Add-WindowsCapability -Online -Name OpenSSH.Client~~~~0.0.1.0
+Add-WindowsCapability -Online -Name OpenSSH.Server~~~~0.0.1.0
+Start-Service sshd
+Set-Service -Name sshd -StartupType 'Automatic'
 
-# Copy Kubeconfig
-Start-BitsTransfer https://raw.githubusercontent.com/swapnil-nirmata/git-app/main/kubeconfig
-
-# Copy the script 
-Start-BitsTransfer https://raw.githubusercontent.com/swapnil-nirmata/windows-nodes/main/Windows-setup.ps1
-
-# run the script
-.\PrepareNode.ps1 -KubernetesVersion v1.23.3 -ContainerRuntime containerD
-
-# Commands 
-
+# Install Docker
 powershell
 Install-Module DockerMsftProvider -Force
 Install-Package Docker -ProviderName DockerMsftProvider -Force
 (Install-WindowsFeature Containers).RestartNeeded
 Restart-Computer
 
-This only installs the server, we also need docker client,
-Start-BitsTransfer https://raw.githubusercontent.com/swapnil-nirmata/windows-nodes/main/handy-commands
-choco install docker
-docker version
+# Install Commands 
 
-Create directory 
+# Create directory 
 mkdir c:\k
 
-Copy Kubeconfig file to this folder
+# Copy Kubeconfig file to this folder
 Start-BitsTransfer https://raw.githubusercontent.com/swapnil-nirmata/windows-nodes/main/kubeconfig
 
-Copy Script for Worker node addition
-Start-BitsTransfer https://raw.githubusercontent.com/swapnil-nirmata/windows-nodes/main/Windows-setup.ps1
+# Copy Script for Worker node addition
+Start-BitsTransfer https://raw.githubusercontent.com/swapnil-nirmata/windows-nodes/main/Install-Windows.ps1
 
+
+#OBSOLETE
+.\PrepareNode.ps1 -KubernetesVersion v1.23.3 -ContainerRuntime containerD
+# Get Chocolatey
+Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString(‘https://chocolatey.org/install.ps1’))
+Start-BitsTransfer https://raw.githubusercontent.com/swapnil-nirmata/windows-nodes/main/Windows-setup.ps1
