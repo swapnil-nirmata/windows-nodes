@@ -349,10 +349,11 @@ function InstallFlannelD()
     New-Directory $logDir
     $log = [io.Path]::Combine($logDir, "flanneldsvc.log");
 
-    #DownloadFile -Url  "https://github.com/$Global:GithubSDNRepository/raw/$Global:GithubSDNBranch/Kubernetes/flannel/$Global:NetworkMode/net-conf.json" -Destination $(GetFlannelNetConf)
-    Invoke-WebRequest -Uri  "https://github.com/$Global:GithubSDNRepository/raw/$Global:GithubSDNBranch/Kubernetes/flannel/$Global:NetworkMode/net-conf.json" -OutFile $(GetFlannelNetConf)
-    #CreateDirectory $(GetKubeFlannelPath)
-    Copy-Item $Global:BaseDir\net-conf.json $DestinationPath
+    DownloadFile -Url  "https://github.com/$Global:GithubSDNRepository/raw/$Global:GithubSDNBranch/Kubernetes/flannel/$Global:NetworkMode/net-conf.json" -Destination $(GetFlannelNetConf)
+    #Invoke-WebRequest -Uri  "https://github.com/$Global:GithubSDNRepository/raw/$Global:GithubSDNBranch/Kubernetes/flannel/$Global:NetworkMode/net-conf.json" -OutFile $(GetFlannelNetConf)
+    CreateDirectory $(GetKubeFlannelPath)
+    copy $Global:BaseDir\net-conf.json $(GetKubeFlannelPath)
+    #Copy-Item $Global:BaseDir\net-conf.json $DestinationPath
 
     $flanneldArgs = @(
         "$DestinationPath\flanneld.exe",
@@ -366,7 +367,7 @@ function InstallFlannelD()
     if (!$service)
     {
         $nodeName = (hostname).ToLower()
-        CreateService -ServiceName FlannelD -CommandLine $flanneldArgs -ServicePath $DestinationPath`
+        CreateService -ServiceName FlannelD -CommandLine $flanneldArgs `
             -LogFile "$log" -EnvVaribles @{NODE_NAME = "$nodeName";}    
     }
 }
@@ -380,7 +381,7 @@ function CreateService()
         [parameter(Mandatory=$true)] [string] $LogFile,
         [parameter(Mandatory=$false)] [Hashtable] $EnvVaribles = $null
     )
-    $binary = CreateSCMService -ServiceName $ServiceName -CommandLine $CommandLine -LogFile $LogFile -EnvVaribles $EnvVaribles
+    $binary = (CreateSCMService -ServiceName $ServiceName -CommandLine $CommandLine -LogFile $LogFile -EnvVaribles $EnvVaribles)[1]
     # remove service, if it exists nope!
     New-Service -name $ServiceName -binaryPathName $binary `
         -displayName $ServiceName -startupType Automatic    `
@@ -1394,7 +1395,7 @@ IsDockerInstalledAndRunning
 Write-Output "Installing Docker Images"
 InstallDockerImages -NanoServerImageName $NanoServerImageName -NanosServerImageTag $NanosServerImageTag -ServercoreImageName $ServercoreImageName -ServerCoreImageTag $ServerCoreImageTag
 Write-Output "Installing Pause Image"
-InstallPauseImage -ImagePath $Global:$BaseDir -GithubSDNRepository $GithubSDNRepository -GithubSDNBranch $GithubSDNBranch
+InstallPauseImage -ImagePath $Global:BaseDir -GithubSDNRepository $GithubSDNRepository -GithubSDNBranch $GithubSDNBranch
 
 # Install 7-ZIP 
 Install-7Zip
