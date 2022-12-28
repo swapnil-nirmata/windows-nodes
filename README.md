@@ -37,49 +37,12 @@ Some minor preparation is needed on the Kubernetes master. It is recommended to 
 ```
 sudo sysctl net.bridge.bridge-nf-call-iptables=1
 ```
-There are two sections you should modify to enable the vxlan networking backend:
-1. In the net-conf.json section of your kube-flannel.yml, double-check:
- - The cluster subnet (e.g. "10.244.0.0/16") is set as desired.
- - VNI 4096 is set in the backend
- - Port 4789 is set in the backend
-2. In the cni-conf.json section of your kube-flannel.yml, change the network name to "vxlan0".
+Use the `kube-flannel.yaml` file attached in this repositry to create a cluster type in Nirmata and update CNI with manifest file
 
-After applying the above steps, the net-conf.json should look as follows:
-```
-   net-conf.json: |
-    {
-      "Network": "10.244.0.0/16",
-      "Backend": {
-        "Type": "vxlan",
-        "VNI" : 4096,
-        "Port": 4789
-      }
-    }
-```
- 
-  The cni-conf.json should look as follows:
-```
-   cni-conf.json: |
-    {
-      "name": "vxlan0",
-      "plugins": [
-        {
-          "type": "flannel",
-          "delegate": {
-            "hairpinMode": true,
-            "isDefaultGateway": true
-          }
-        },
-        {
-          "type": "portmap",
-          "capabilities": {
-            "portMappings": true
-          }
-        }
-      ]
-    }
-```
-  Since flannel pods are Linux-based, apply nodeSelector to flannel DaemonSet to only target Linux Nodes. Flannel will run as host service on windows nodes.
+Create a Nirmata Managed Cluster using this cluster type
+Add `hostNetwork: true` in `nirmata-cni-installer` daemonset if pods do not come up
+
+Since flannel pods are Linux-based, apply nodeSelector to flannel DaemonSet to only target Linux Nodes. Flannel will run as host service on windows nodes.
   
 
 # Installation
