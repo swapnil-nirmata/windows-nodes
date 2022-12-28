@@ -1,4 +1,4 @@
-# Add Windows Workers to an existing cluster
+# Nirmata Managed Kubernetes cluster with Winodws worker nodes
 
 
 **Table of Contents**
