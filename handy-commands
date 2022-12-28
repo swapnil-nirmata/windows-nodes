@@ -21,7 +21,7 @@ mkdir c:\k
 Start-BitsTransfer https://raw.githubusercontent.com/swapnil-nirmata/windows-nodes/main/kubeconfig
 
 # Copy Script for Worker node addition
-Start-BitsTransfer https://raw.githubusercontent.com/swapnil-nirmata/windows-nodes/main/Install-Windows.ps1
+Start-BitsTransfer https://raw.githubusercontent.com/swapnil-nirmata/windows-nodes/main/Windows-Setup-V1-21.ps1
 
 
 #OBSOLETE
