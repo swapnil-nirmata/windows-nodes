@@ -929,7 +929,11 @@ function GetSourceVip($NetworkName)
     Remove-Item env:CNI_PATH
     popd
 
-    return $sourceVipJSONData.ip4.ip.Split("/")[0]
+    $sourceVipAddress = $sourceVipJSONData.ips | % address
+    Write-Host sourceVipAddress.Split("/")[0]
+    
+    return sourceVipAddressSplit("/")[0]
+    #return $sourceVipJSONData.ip4.ip.Split("/")[0]
 }
 
 function InstallKubeProxy()
