@@ -3,7 +3,7 @@ Param(
     [parameter(Mandatory = $false)] $BaseDir="c:\k",
     [parameter(Mandatory = $false)] $ClusterCIDR="10.244.0.0/16",
     [parameter(Mandatory = $false)] $ServiceCIDR="10.10.0.0/16",
-    [parameter(Mandatory = $false)] $InterfaceName="Ethernet",
+    [parameter(Mandatory = $false)] $InterfaceName="Ethernet0",
     [parameter(Mandatory = $false)] $Release = "1.21.5",
     [parameter(Mandatory = $false)] $NanosServerImageTag = "10.0.17763.802",
     [parameter(Mandatory = $false)] $ServerCoreImageTag = "ltsc2019",
