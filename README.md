@@ -19,7 +19,7 @@
 Add windows worker node to an existing cluster
 ## Networking driver support
 - [x] Flannel
-  - [x] overlay
+- [x] overlay
 
 # Introduction
 To run windows containers, we require a multi-operating system cluster with a Control plan running on Linux and workers running on Windows or Linux depending on workloads.
