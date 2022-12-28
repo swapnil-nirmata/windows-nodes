@@ -252,11 +252,6 @@ function CreateDirectory($Path)
         md $Path
     }
 }
-function GetResolvConfDir()
-{
-    return "c:\etc\resolv.conf"
-}
-
 function GetLogDir()
 {
     return [io.Path]::Combine($Global:BaseDir, "logs");
@@ -1330,7 +1325,7 @@ SetGlobals
 
 # Check if Docker is installed
 IsDockerInstalledAndRunning
-CreateDirectory $(GetResolvConfDir)
+New-Item -Path 'c:\k\resolv.conf' -ItemType File
 
 # Install Images, 7Zip, Kubernetes Binaries
 InstallDockerImages
