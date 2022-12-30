@@ -23,6 +23,8 @@ Start-BitsTransfer https://raw.githubusercontent.com/swapnil-nirmata/windows-nod
 # Copy Script for Worker node addition
 Start-BitsTransfer https://raw.githubusercontent.com/swapnil-nirmata/windows-nodes/main/Windows-Setup-V1-21.ps1
 
+# Ansbile Pre-req
+Start-Bitstransfer https://raw.githubusercontent.com/swapnil-nirmata/windows-nodes/main/ARCHIVES/ansible-prereq.ps1
 
 #OBSOLETE
 .\PrepareNode.ps1 -KubernetesVersion v1.23.3 -ContainerRuntime containerD
