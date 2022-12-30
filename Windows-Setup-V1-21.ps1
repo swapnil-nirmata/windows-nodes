@@ -1325,7 +1325,7 @@ SetGlobals
 
 # Check if Docker is installed
 IsDockerInstalledAndRunning
-New-Item -Path 'c:\k\resolv.conf' -ItemType File
+New-Item -Path 'c:\etc\resolv.conf' -ItemType File
 
 # Install Images, 7Zip, Kubernetes Binaries
 InstallDockerImages
