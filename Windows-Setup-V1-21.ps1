@@ -1325,7 +1325,6 @@ SetGlobals
 
 # Check if Docker is installed
 IsDockerInstalledAndRunning
-New-Item -Path 'c:\etc\resolv.conf' -ItemType File
 
 # Install Images, 7Zip, Kubernetes Binaries
 InstallDockerImages
@@ -1370,3 +1369,4 @@ InstallKubeProxy -KubeConfig $(GetKubeConfig) `
 StartKubeproxy
 GetKubeNodes
 Write-Host "Node $(hostname) successfully joined the cluster"
+New-Item -Path 'c:\etc\resolv.conf' -ItemType File
